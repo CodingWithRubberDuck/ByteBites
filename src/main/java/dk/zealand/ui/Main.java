@@ -1,17 +1,19 @@
-package dk.zealand;
+package dk.zealand.ui;
+
+import dk.zealand.domain.Dish;
+import dk.zealand.service.MenuService;
 
 import java.util.List;
 import java.util.Scanner;
 
 public class Main {
-
-    private static final String[] DISHES = {
-            "Festivalburger",
-            "Sprøde fritter",
-            "Vegansk bowl"
-    };
+    private final MenuService menuService = new MenuService();
 
     public static void main(String[] args) {
+        new Main().run();
+    }
+
+    private void run() {
         Scanner scanner = new Scanner(System.in);
         boolean running = true;
 
@@ -36,7 +38,7 @@ public class Main {
         System.out.println("Programmet er afsluttet.");
     }
 
-    private static void showMenu() {
+    private void showMenu() {
         System.out.println();
         System.out.println("1. Vis retter");
         System.out.println("2. Opret bestilling");
@@ -44,11 +46,13 @@ public class Main {
         System.out.print("Vælg: ");
     }
 
-    private static void showDishes() {
+    private void showDishes() {
+        List<Dish> dishes = menuService.getDishes();
         System.out.println("Retter:");
 
-        for (int i = 0; i < DISHES.length; i++) {
-            System.out.printf("%d. %s%n", i + 1, DISHES[i]);
+        for (int i = 0; i < dishes.size(); i++) {
+            Dish dish = dishes.get(i);
+            System.out.printf("%d. %s - %d kr.%n", i + 1, dish.getName(), dish.getPrice());
         }
     }
 }
